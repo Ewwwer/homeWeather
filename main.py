@@ -1,6 +1,13 @@
 import requests
 import json
 from datetime import datetime
+from tkinter import *
+from PIL import ImageTk, Image
+
+
+root = Tk()
+root.title("HomeWeather")
+root.geometry("250x122")
 
 api_key = '30a0a1deb5b8512aa9b6789ef5f99624'
 city_coord = '43.262985, -2.935013'
@@ -20,10 +27,36 @@ if x["currently"] != "404":
     y = x["currently"]
 
     #guardamos todos los valores de currently
-    temp_actual = y["temperature"]
+    temp_actual = int(y["temperature"])
     pres_actual = y["pressure"]
     descrip_actual = y["summary"]
     icon_actual = y["icon"]
+    
+    #Definimos el tipo de icono en base a icon recibido por json (creamos funcion para que sea reutilizable
+    
+    def icono_tiempo(nombre_var):
+        if nombre_var == "clear-day":
+            print("imagen sol")
+        elif nombre_var == "clear-night":
+            print("imagen luna")
+        elif nombre_var == "rain":
+            print("imagen lluvia")
+        elif nombre_var == "snow":
+            print("imagen nieve")
+        elif nombre_var == "sleet":
+            print("imagen granizo")
+        elif nombre_var == "wind":
+            print("imagen viento")
+        elif nombre_var == "fog":
+            print("imagen niebla")
+        elif nombre_var == "cloudy":
+            print("imagen nube")
+        elif nombre_var == "partly-cloudy-day":
+            print("imagen dia nube")
+        elif nombre_var == "partly-cloudy-night":
+            print("imagen noche nube")
+        
+    icono_tiempo(icon_actual)
 
     #guardamos varlores diarios en z
     z = x["daily"]
@@ -46,6 +79,8 @@ if x["currently"] != "404":
     temp_min_manana = int(prev_dias[2]["temperatureLow"])
     pres_manana = prev_dias[2]["pressure"]
     icon_manana = prev_dias[2]["icon"]
+    
+    
 
     #mostramos un icono para saber si la presión sube o baja respecto al día anterior
     if pres_manana > pres_actual:
@@ -125,6 +160,16 @@ if x["currently"] != "404":
     if pres_cinco > pres_cuatro:
         print(r'\u1F815')
     elif pres_cinco == pres_cuatro:
-        print('=')
+        print('=')/home/pi/Desktop/homeWeather
     else:
         print(r'\u1F817')
+        
+    #GUI
+    mylabel = Label(root, text=temp_actual)
+    mylabel.pack()
+    
+    
+    root.mainloop()
+    
+    
+    
